@@ -1,0 +1,4 @@
+bin/
+.DS_Store
+proguard-project.txt
+gen/
