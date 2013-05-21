@@ -52,7 +52,6 @@ public class MainActivity extends Activity {
     }
 
     private void setStickyEmail(String email) {
-    	Log.v("MainActivity", ">>>>>>>>>>>>> Setting email to: " + email);
     	prefs.edit().putString(PREFS_KEY, email).commit();
     }
 
@@ -72,7 +71,6 @@ public class MainActivity extends Activity {
         emailSpinner.setAdapter(dataAdapter);
 
         int selectedIndex = indexOf(availableEmails, getStickyEmail());
-        Log.v("MainActivity", ">>>>>>>>> Selected email index: " + selectedIndex);
         if (selectedIndex == -1) { selectedIndex = 0; }
         emailSpinner.setSelection(selectedIndex);
     }
