@@ -6,9 +6,12 @@ import java.util.Locale;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ResolveInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -22,20 +25,39 @@ public class MainActivity extends Activity {
     private Button sendButton;
     private Spinner emailSpinner;
 
-    @Override
+    private SharedPreferences prefs;
+    private final String PREFS_KEY = "chosen_email";
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        prefs = this.getSharedPreferences("org.ajack.quick_email", Context.MODE_PRIVATE);
 
         initWidgets();
 
         sendButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 String content = textInput.getText().toString();
-                String email = emailSpinner.getSelectedItem().toString();
-                sendEmail(content, email);
+                String selectedEmail = emailSpinner.getSelectedItem().toString();
+                setStickyEmail(selectedEmail);
+                sendEmail(content, selectedEmail);
             }
         });
+    }
+
+    protected void onPause() {
+        finish();
+        super.onPause();
+    }
+
+    private void setStickyEmail(String email) {
+    	Log.v("MainActivity", ">>>>>>>>>>>>> Setting email to: " + email);
+    	prefs.edit().putString(PREFS_KEY, email).commit();
+    }
+
+    private String getStickyEmail() {
+    	return prefs.getString(PREFS_KEY, availableEmails()[0]);
     }
 
     private void initWidgets() {
@@ -43,9 +65,16 @@ public class MainActivity extends Activity {
         sendButton = (Button) findViewById(R.id.send_button);
         emailSpinner = (Spinner) findViewById(R.id.email_spinner);
 
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, availableEmails());
+        String[] availableEmails = availableEmails();
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, availableEmails);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         emailSpinner.setAdapter(dataAdapter);
+
+        int selectedIndex = indexOf(availableEmails, getStickyEmail());
+        Log.v("MainActivity", ">>>>>>>>> Selected email index: " + selectedIndex);
+        if (selectedIndex == -1) { selectedIndex = 0; }
+        emailSpinner.setSelection(selectedIndex);
     }
 
     private boolean sendEmail(String content, String address) {
@@ -87,9 +116,13 @@ public class MainActivity extends Activity {
         return emails;
     }
 
-    protected void onPause() {
-        finish();
-        super.onPause();
+    private int indexOf(String[] array, String needle) {
+    	for (int i = 0; i < array.length; i++) {
+    		if (array[i].equals(needle)) {
+    			return i;
+    		}
+    	}
+    	return -1;
     }
 
 }
