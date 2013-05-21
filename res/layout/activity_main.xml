@@ -5,7 +5,7 @@
     android:layout_margin="@dimen/layout_margin"
     android:background="@color/layout_background"
     android:padding="@dimen/layout_padding"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
     <EditText
         android:id="@+id/input_field"
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/text_input_margin_bottom"
-        android:inputType="text" />
+        android:inputType="textCapSentences|textAutoCorrect" />
 
     <LinearLayout
         android:id="@+id/spinner_button_layout"
