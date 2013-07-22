@@ -4,3 +4,5 @@ proguard-project.txt
 gen/
 .classpath
 .settings/
+.idea/
+quick_android_mailer.iml
