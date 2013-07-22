@@ -80,6 +80,7 @@ public class MainActivity extends Activity {
         i.setType("message/rfc822");
         i.putExtra(Intent.EXTRA_EMAIL, new String[]{ address });
         i.putExtra(Intent.EXTRA_SUBJECT, content);
+        i.putExtra(Intent.EXTRA_TEXT, content);
 
         // From http://stackoverflow.com/a/3936323
         final List<ResolveInfo> matches = getPackageManager().queryIntentActivities(i, 0);
