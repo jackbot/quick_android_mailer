@@ -42,6 +42,7 @@ public class MainActivity extends Activity {
                 String selectedEmail = emailSpinner.getSelectedItem().toString();
                 setStickyEmail(selectedEmail);
                 sendEmail(content, selectedEmail);
+                MainActivity.this.finish();
             }
         });
     }
